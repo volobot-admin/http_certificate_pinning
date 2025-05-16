@@ -51,9 +51,10 @@ class CertificatePinningInterceptor extends Interceptor {
         return super.onRequest(options, handler);
       } else {
         handler.reject(
-          DioException(
+          DioError(
             requestOptions: options,
-            error: CertificateNotVerifiedException(),
+            error: CertificateNotVerifiedException().toString(),
+            type: DioErrorType.other,
           ),
           callFollowingErrorInterceptor,
         );
@@ -65,9 +66,10 @@ class CertificatePinningInterceptor extends Interceptor {
         error = const CertificateNotVerifiedException();
       } else if (e is PlatformException && e.code == 'NO_INTERNET') {
         return handler.reject(
-          DioException.connectionError(
+          DioError(
             requestOptions: options,
-            reason: 'NO_INTERNET',
+            error: "NO_INTERNET",
+            type: DioErrorType.other,
           ),
         );
       } else {
@@ -75,10 +77,11 @@ class CertificatePinningInterceptor extends Interceptor {
       }
 
       handler.reject(
-        DioException(
-          requestOptions: options,
-          error: error,
-        ),
+        DioError(
+            requestOptions: options,
+            error: error.toString(),
+            type: DioErrorType.other,
+          ),
         callFollowingErrorInterceptor,
       );
     }
