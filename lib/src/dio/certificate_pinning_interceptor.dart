@@ -69,7 +69,7 @@ class CertificatePinningInterceptor extends Interceptor {
           DioError(
             requestOptions: options,
             error: "NO_INTERNET",
-            type: DioErrorType.other,
+            type: DioErrorType.connectTimeout,
           ),
         );
       } else {
